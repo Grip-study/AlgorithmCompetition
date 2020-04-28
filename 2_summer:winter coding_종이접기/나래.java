@@ -1,26 +1,33 @@
+import java.math.*;
 import java.util.*;
 class Solution {
-    public int solution(int[][] board, int[] moves) {
-        int answer = 0;
-        int length = board.length;
-        Stack<Integer> basket = new Stack<>();
-        
-        for (int move : moves) {
-            int x = move - 1;
-            for (int y = 0; y < length; y++) {
-                int position = board[y][x];
-                if (position > 0) {
-                    if (basket.size() > 0 && basket.peek() == position) {
-                        basket.pop();
-                        answer = answer + 2;
-                    } else {
-                        basket.push(position);
-                    }
-                    board[y][x] = 0;
-                    break;
-                }
-            }
-        }
-        return answer;
-    }
+    int[] tree;
+    int size;
+    List<Integer> answer = new ArrayList<>();
+  public int[] solution(int n) {
+      size = (int) Math.pow(2, n);
+      tree = new int[size];
+      
+      tree[1] = 0;
+      for (int idx = 2; idx < size - 1; idx = idx + 2) {
+          tree[idx] = 0;
+          tree[idx + 1] = 1;
+      }
+      
+      inorder(1);
+      
+      return answer.stream().mapToInt(i->i).toArray();
+  }
+
+  private void inorder(int idx) {
+      if(idx * 2 < size) {
+          inorder(idx * 2);
+      }
+      
+      answer.add(tree[idx]);
+      
+      if(idx * 2 + 1 < size) {
+          inorder(idx * 2 + 1);
+      }
+  };
 }

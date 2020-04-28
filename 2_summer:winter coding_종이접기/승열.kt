@@ -7,17 +7,13 @@ class 종이접기 {
 
         (0 until n).forEach { i ->
             val index = 2.toDouble().pow(i.toDouble()).toInt()
-
             val newList = LinkedList<Int>()
             var isDown = false
-            (0 until index).asSequence().map {
-                if (isDown) newList.add(1)
-                else newList.add(0)
-                isDown = !isDown
-            }.map {
+            (0 until index).forEach { _ ->
+                newList.add(if (isDown) 1 else 0)
                 if (preList.isNotEmpty()) newList.add(preList.pollFirst())
-            }.toList()
-
+                isDown = !isDown
+            }
             preList = newList
         }
 
